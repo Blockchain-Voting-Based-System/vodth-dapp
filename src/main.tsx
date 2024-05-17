@@ -1,16 +1,17 @@
-import React from "react";
-import ReactDOM from "react-dom/client";
 import "@mysten/dapp-kit/dist/index.css";
 import "@radix-ui/themes/styles.css";
+import React from "react";
+import ReactDOM from "react-dom/client";
+import "./index.css";
 
-import { getFullnodeUrl } from "@mysten/sui.js/client";
 import {
   SuiClientProvider,
   WalletProvider,
   createNetworkConfig,
 } from "@mysten/dapp-kit";
-import { QueryClient, QueryClientProvider } from "@tanstack/react-query";
+import { getFullnodeUrl } from "@mysten/sui.js/client";
 import { Theme } from "@radix-ui/themes";
+import { QueryClient, QueryClientProvider } from "@tanstack/react-query";
 import App from "./App.tsx";
 
 const queryClient = new QueryClient();

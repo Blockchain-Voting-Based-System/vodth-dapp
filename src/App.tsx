@@ -1,23 +1,24 @@
-import { Container } from "@radix-ui/themes";
-import { WalletStatus } from "./WalletStatus";
-import AppNav from "./components/AppNav";
+import {
+  Route,
+  RouterProvider,
+  createBrowserRouter,
+  createRoutesFromElements,
+} from "react-router-dom";
+import DefaultLayout from "./layouts/DefaultLayout";
+import EventPage from "./pages/EventPage";
+import HomePage from "./pages/HomePage";
+
+const router = createBrowserRouter(
+  createRoutesFromElements(
+    <Route path="/" element={<DefaultLayout />}>
+      <Route index element={<HomePage />} />
+      <Route path="events" element={<EventPage />} />
+    </Route>,
+  ),
+);
 
 function App() {
-  return (
-    <>
-      <AppNav />
-      <Container>
-        <Container
-          mt="5"
-          pt="2"
-          px="4"
-          style={{ background: "var(--gray-a2)", minHeight: 500 }}
-        >
-          <WalletStatus />
-        </Container>
-      </Container>
-    </>
-  );
+  return <RouterProvider router={router} />;
 }
 
 export default App;

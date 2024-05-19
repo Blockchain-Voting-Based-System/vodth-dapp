@@ -1,28 +1,11 @@
-import { ConnectButton } from "@mysten/dapp-kit";
-import { Box, Container, Flex, Heading } from "@radix-ui/themes";
+import { Container } from "@radix-ui/themes";
 import { WalletStatus } from "./WalletStatus";
+import AppNav from "./components/AppNav";
 
 function App() {
   return (
     <>
-      <h1 className="text-red-500">Vaneath</h1>
-      <Flex
-        position="sticky"
-        px="4"
-        py="2"
-        justify="between"
-        style={{
-          borderBottom: "1px solid var(--gray-a2)",
-        }}
-      >
-        <Box>
-          <Heading>dApp Starter Template</Heading>
-        </Box>
-
-        <Box>
-          <ConnectButton />
-        </Box>
-      </Flex>
+      <AppNav />
       <Container>
         <Container
           mt="5"

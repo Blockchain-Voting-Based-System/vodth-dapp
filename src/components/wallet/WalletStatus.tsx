@@ -1,15 +1,13 @@
 import { useCurrentAccount } from "@mysten/dapp-kit";
-import { Container, Flex, Heading, Text } from "@radix-ui/themes";
-import { OwnedObjects } from "./OwnedObjects";
-import CreateEventButton from "./components/events/CreateEventButton";
+import { Flex, Heading, Text } from "@radix-ui/themes";
+import { OwnedObjects } from "../../OwnedObjects";
 
 export function WalletStatus() {
   const account = useCurrentAccount();
 
   return (
-    <Container my="2">
-      <CreateEventButton />
-      <Heading mb="2">Wallet Status</Heading>
+    <div>
+      <Heading>Wallet Status</Heading>
       {account ? (
         <Flex direction="column">
           <Text>Wallet connected</Text>
@@ -19,6 +17,6 @@ export function WalletStatus() {
         <Text>Wallet not connected</Text>
       )}
       <OwnedObjects />
-    </Container>
+    </div>
   );
 }

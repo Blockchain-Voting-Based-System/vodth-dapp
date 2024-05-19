@@ -31,8 +31,9 @@ const suiAfter = await suiClient.getBalance({
 
 const CreateEventButton = () => {
   return (
-    <div>
+    <>
       <button
+        className="px-8 py-2 bg-slate-500 rounded-md"
         onClick={async () => {
           await requestSuiFromFaucetV1({
             host: getFaucetHost("devnet"),
@@ -48,7 +49,7 @@ const CreateEventButton = () => {
       >
         Request SUI from Faucet
       </button>
-    </div>
+    </>
   );
 };
 

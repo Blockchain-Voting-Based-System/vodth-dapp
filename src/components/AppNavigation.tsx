@@ -1,7 +1,8 @@
 import { ConnectButton } from "@mysten/dapp-kit";
 import { Box, Flex, Heading } from "@radix-ui/themes";
+import { Link } from "react-router-dom";
 
-const AppNav = () => {
+const AppNavigation = () => {
   return (
     <>
       <Flex
@@ -11,11 +12,18 @@ const AppNav = () => {
         justify="between"
         style={{
           borderBottom: "1px solid var(--gray-a2)",
+          alignItems: "center",
         }}
       >
         <Box>
-          <Heading>dApp Starter Template</Heading>
+          <Link to="/">
+            <Heading>Vodth DApp</Heading>
+          </Link>
         </Box>
+
+        <Link className="hover:underline" to="/events">
+          Events
+        </Link>
 
         <Box>
           <ConnectButton />
@@ -25,4 +33,4 @@ const AppNav = () => {
   );
 };
 
-export default AppNav;
+export default AppNavigation;

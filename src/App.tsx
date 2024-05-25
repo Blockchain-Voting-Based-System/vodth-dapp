@@ -1,40 +1,28 @@
-import { ConnectButton } from "@mysten/dapp-kit";
-import { Box, Container, Flex, Heading } from "@radix-ui/themes";
-import { WalletStatus } from "./WalletStatus";
+import {
+  Route,
+  RouterProvider,
+  createBrowserRouter,
+  createRoutesFromElements,
+} from "react-router-dom";
+import DefaultLayout from "./layouts/DefaultLayout";
+import HomePage from "./pages/HomePage";
+import { LoginPage } from "./pages/auth/LoginPage";
+import EventPage from "./pages/events/EventPage";
+import NewEventPage from "./pages/events/NewEventPage";
+
+const router = createBrowserRouter(
+  createRoutesFromElements(
+    <Route path="/" element={<DefaultLayout />}>
+      <Route index element={<HomePage />} />
+      <Route path="events" element={<EventPage />} />
+      <Route path="login" element={<LoginPage />} />
+      <Route path="events/new" element={<NewEventPage />} />
+    </Route>,
+  ),
+);
 
 function App() {
-  return (
-    <>
-      <h1 className="text-red-500">Vaneath</h1>
-      <Flex
-        position="sticky"
-        px="4"
-        py="2"
-        justify="between"
-        style={{
-          borderBottom: "1px solid var(--gray-a2)",
-        }}
-      >
-        <Box>
-          <Heading>dApp Starter Template</Heading>
-        </Box>
-
-        <Box>
-          <ConnectButton />
-        </Box>
-      </Flex>
-      <Container>
-        <Container
-          mt="5"
-          pt="2"
-          px="4"
-          style={{ background: "var(--gray-a2)", minHeight: 500 }}
-        >
-          <WalletStatus />
-        </Container>
-      </Container>
-    </>
-  );
+  return <RouterProvider router={router} />;
 }
 
 export default App;

@@ -175,10 +175,10 @@ export const LoginPage: React.FC = () => {
     // https://docs.sui.io/concepts/cryptography/zklogin#user-salt-management
 
     const requestOptions =
-      import.meta.env.VITE_SALT_SERVICE_URL === "/dummy-salt-service.json"
+      import.meta.env.VITE_SALT_SERVICE_URL === "dev_salt"
         ? // dev, using a JSON file (same salt all the time)
           {
-            method: "GET",
+            salt: import.meta.env.VITE_USER_SALT,
           }
         : // prod, using an actual salt server
           {
@@ -187,24 +187,34 @@ export const LoginPage: React.FC = () => {
             body: JSON.stringify({ jwt }),
           };
 
-    const saltResponse: { salt: string } | null = await fetch(
-      import.meta.env.VITE_SALT_SERVICE_URL,
-      requestOptions,
-    )
-      .then((res) => {
-        console.debug("[completeZkLogin] salt service success");
-        return res.json();
-      })
-      .catch((error: unknown) => {
-        console.warn("[completeZkLogin] salt service error:", error);
-        return null;
-      });
+    if (import.meta.env.VITE_SALT_SERVICE_URL === "dev_salt") {
+      console.warn(
+        "[completeZkLogin] Using dev_salt, the salt will be the same every time",
+      );
+    } else {
+      const saltResponse: { salt: string } | null = await fetch(
+        import.meta.env.VITE_SALT_SERVICE_URL,
+        requestOptions,
+      )
+        .then((res) => {
+          console.debug("[completeZkLogin] salt service success");
+          return res.json();
+        })
+        .catch((error: unknown) => {
+          console.warn("[completeZkLogin] salt service error:", error);
+          return null;
+        });
 
-    if (!saltResponse) {
-      return;
+      if (!saltResponse) {
+        return;
+      }
     }
 
-    const userSalt = BigInt(saltResponse.salt);
+    // Uncomment this line to use the salt from the server
+    // const userSalt = BigInt(saltResponse.salt);
+
+    // For testing purpose, we are using salt from env
+    const userSalt = BigInt(import.meta.env.VITE_USER_SALT);
 
     // === Get a Sui address for the user ===
     // https://docs.sui.io/concepts/cryptography/zklogin#get-the-users-sui-address

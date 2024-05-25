@@ -182,12 +182,6 @@ const main = () => {
           </table>
         </div>
       </section>
-      {/* <section className="w-full md:w-[30%] bg-indigo-3200 dark:bg-slate-900/20">
-        <div className="flex flex-cols m-4">
-         
-        </div>
-        <div></div>
-      </section> */}
     </div>
   );
 };

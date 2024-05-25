@@ -5,9 +5,10 @@ import {
   createRoutesFromElements,
 } from "react-router-dom";
 import DefaultLayout from "./layouts/DefaultLayout";
-import EventPage from "./pages/EventPage";
 import HomePage from "./pages/HomePage";
 import { LoginPage } from "./pages/LoginPage";
+import EventPage from "./pages/events/EventPage";
+import NewEventPage from "./pages/events/NewEventPage";
 
 const router = createBrowserRouter(
   createRoutesFromElements(
@@ -15,6 +16,7 @@ const router = createBrowserRouter(
       <Route index element={<HomePage />} />
       <Route path="events" element={<EventPage />} />
       <Route path="login" element={<LoginPage />} />
+      <Route path="events/new" element={<NewEventPage />} />
     </Route>,
   ),
 );

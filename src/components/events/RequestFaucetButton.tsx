@@ -29,7 +29,7 @@ const suiAfter = await suiClient.getBalance({
   owner: MY_ADDRESS,
 });
 
-const CreateEventButton = () => {
+const RequestFaucetButton = () => {
   return (
     <>
       <button
@@ -53,4 +53,4 @@ const CreateEventButton = () => {
   );
 };
 
-export default CreateEventButton;
+export default RequestFaucetButton;

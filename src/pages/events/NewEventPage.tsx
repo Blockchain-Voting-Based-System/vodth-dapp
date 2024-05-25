@@ -1,5 +1,11 @@
+import CsvUploader from "../../components/csv/CsvUploader";
+
 const NewEventPage = () => {
-  return <div>NewEventPage</div>;
+  return (
+    <>
+      <CsvUploader />
+    </>
+  );
 };
 
 export default NewEventPage;

@@ -6,7 +6,7 @@ import {
 } from "react-router-dom";
 import DefaultLayout from "./layouts/DefaultLayout";
 import HomePage from "./pages/HomePage";
-import { LoginPage } from "./pages/LoginPage";
+import { LoginPage } from "./pages/auth/LoginPage";
 import EventPage from "./pages/events/EventPage";
 import NewEventPage from "./pages/events/NewEventPage";
 

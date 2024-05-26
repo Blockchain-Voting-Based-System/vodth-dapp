@@ -2,6 +2,7 @@ import { addDoc, collection, doc } from "firebase/firestore";
 import CSVReader from "react-csv-reader";
 import { firestore } from "../../firebase";
 import { useGenerateSecret } from "../../services/useGenerateSecret";
+import { useSendEmail } from "../../services/useSendEmail";
 
 const CsvUploader = () => {
   return (
@@ -23,6 +24,8 @@ const CsvUploader = () => {
 
               // Generate a hash of the email and add it as the 'secret' field
               row.secret = useGenerateSecret(row.email);
+
+              useSendEmail(row.email, eventName, row.secret);
 
               await addDoc(votersCollection, row);
             });

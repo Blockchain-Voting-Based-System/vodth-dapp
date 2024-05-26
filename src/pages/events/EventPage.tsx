@@ -1,6 +1,5 @@
 import { Link } from "react-router-dom";
 import RequestFaucetButton from "../../components/events/RequestFaucetButton";
-
 const EventPage = () => {
   return (
     <>

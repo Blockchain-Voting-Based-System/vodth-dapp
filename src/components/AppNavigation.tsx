@@ -25,6 +25,10 @@ const AppNavigation = () => {
           Events
         </Link>
 
+        <Link className="hover:underline" to="/login">
+          Login
+        </Link>
+
         <Box>
           <ConnectButton />
         </Box>

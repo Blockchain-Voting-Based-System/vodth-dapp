@@ -6,7 +6,6 @@ const HomePage = () => {
     <>
       <div className="bg-gray-500 p-10 rounded-lg">
         <WalletStatus />
-        <LoginPage />
       </div>
     </>
   );

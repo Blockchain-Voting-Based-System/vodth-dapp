@@ -10,15 +10,25 @@ const suiClient = new SuiClient({
   url: getFullnodeUrl(NETWORK),
 });
 
+type CandidateResult = {
+  candidate_id: string | undefined;
+  success: boolean;
+};
 export async function NewCandidate(
   account: AccountData,
   event_id: String,
-): Promise<boolean> {
-  let create_result = false;
+): Promise<CandidateResult> {
+  let candidateResult: CandidateResult = {
+    candidate_id: "",
+    success: false,
+  };
   const new_candidate = import.meta.env.VITE_NEW_CANDIDATE;
   const txb = new TransactionBlock();
   txb.setSender(account.userAddr);
-  txb.moveCall({ target: new_candidate, arguments: [txb.pure(event_id)] });
+  txb.moveCall({
+    target: new_candidate,
+    arguments: [txb.pure(event_id)],
+  });
   const ephemeralKeyPair = keypairFromSecretKey(account.ephemeralPrivateKey);
   const { bytes, signature: userSignature } = await txb.sign({
     client: suiClient,
@@ -39,16 +49,14 @@ export async function NewCandidate(
       },
     })
     .then((result) => {
-      console.debug(
-        "[sendTransaction] executeTransactionBlock response:",
-        result,
-      );
-      create_result = true;
+      candidateResult.success = true;
+      candidateResult.candidate_id =
+        result.effects?.created?.[0]?.reference?.objectId;
     })
     .catch((error: unknown) => {
       console.warn("[sendTransaction] executeTransactionBlock failed:", error);
-      create_result = false;
+      candidateResult.success = false;
     });
 
-  return create_result;
+  return candidateResult;
 }

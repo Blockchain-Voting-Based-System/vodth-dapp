@@ -1,5 +1,4 @@
 import CsvUploader from "../../components/csv/CsvUploader";
-
 const NewEventPage = () => {
   return (
     <>

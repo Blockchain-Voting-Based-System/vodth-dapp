@@ -10,8 +10,16 @@ const suiClient = new SuiClient({
   url: getFullnodeUrl(NETWORK),
 });
 
-export async function NewEvent(account: AccountData): Promise<boolean> {
-  let create_result = false;
+type EventResult = {
+  event_id: string | undefined;
+  success: boolean;
+};
+
+export async function NewEvent(account: AccountData): Promise<EventResult> {
+  let eventResult: EventResult = {
+    event_id: "",
+    success: false,
+  };
   const new_event = import.meta.env.VITE_NEW_EVENT;
   const txb = new TransactionBlock();
   txb.setSender(account.userAddr);
@@ -37,16 +45,13 @@ export async function NewEvent(account: AccountData): Promise<boolean> {
       },
     })
     .then((result) => {
-      console.debug(
-        "[sendTransaction] executeTransactionBlock response:",
-        result,
-      );
-      create_result = true;
+      eventResult.success = true;
+      eventResult.event_id = result.effects?.created?.[0]?.reference?.objectId;
     })
     .catch((error: unknown) => {
       console.warn("[sendTransaction] executeTransactionBlock failed:", error);
-      create_result = false;
+      eventResult.success = false;
     });
 
-  return create_result;
+  return eventResult;
 }

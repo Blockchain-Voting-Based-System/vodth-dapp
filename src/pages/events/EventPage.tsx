@@ -9,7 +9,7 @@ const EventPage = () => {
   const account = accounts.current[0];
   return (
     <>
-      <RequestFaucetButton />
+      {/* <RequestFaucetButton /> */}
       <NewEventButton account={account} />
       <NewCandidateButton account={account} />
     </>

@@ -12,7 +12,7 @@ export const NewCandidateButton = ({ account }: NewCandidateButtonProps) => {
 
   async function createCandidate() {
     const event_id =
-      "0xda237562d0137ae1e2da79d01f80c595f8f14de8745bc5dae6d6e0354819a818";
+      "0xf0888aeed150159cafa654daa8556e05f14d2ebd564a4e25116dd7329eb73989";
     setModalContent("🚀 Creating Candidate...");
     const result = await NewCandidate(account, event_id);
 

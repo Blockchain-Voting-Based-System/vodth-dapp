@@ -9,6 +9,7 @@ import HomePage from "./pages/HomePage";
 import { LoginPage } from "./pages/auth/LoginPage";
 import EventPage from "./pages/events/EventPage";
 import NewEventPage from "./pages/events/NewEventPage";
+import EventDetailsPage from "./pages/events/EventDetailPage";
 
 const router = createBrowserRouter(
   createRoutesFromElements(
@@ -17,9 +18,10 @@ const router = createBrowserRouter(
         <Route index element={<HomePage />} />
         <Route path="events" element={<EventPage />} />
         <Route path="events/new" element={<NewEventPage />} />
+        <Route path="events/:event_id" element={<EventDetailsPage />} />
       </Route>
       <Route path="login" element={<LoginPage />} />
-    </>
+    </>,
   ),
 );
 

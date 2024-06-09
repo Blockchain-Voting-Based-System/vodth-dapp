@@ -1,17 +1,88 @@
-import RequestFaucetButton from "../../components/events/RequestFaucetButton";
-import { NewEventButton } from "../../components/events/NewEventButton";
-import { NewCandidateButton } from "../../components/events/NewCandidateButton";
-import { loadAccounts } from "./../../utils/sui";
-import { AccountData } from "../../utils/suiType";
-import { useRef } from "react";
+import { useEffect, useState } from "react";
+import {
+  DocumentData,
+  collection,
+  getDocs,
+  getFirestore,
+  query,
+} from "firebase/firestore";
+import { Link } from "react-router-dom";
+
+// const header = ["Subject", "Type", "Duration", "Created by", "Date", "Status"];
 const EventPage = () => {
-  const accounts = useRef<AccountData[]>(loadAccounts());
-  const account = accounts.current[0];
+  const [events, setEvents] = useState<DocumentData>([]);
+  const firestore = getFirestore();
+
+  useEffect(() => {
+    const fetchEvents = async () => {
+      const q = query(collection(firestore, "events"));
+      const eventSnapshot = await getDocs(q);
+      setEvents(eventSnapshot.docs);
+    };
+
+    fetchEvents();
+  }, []);
+
   return (
     <>
-      {/* <RequestFaucetButton /> */}
-      <NewEventButton account={account} />
-      <NewCandidateButton account={account} />
+      <div className="bg-gray-100 p-4">
+        <div className="container mx-auto p-4 shadow-lg rounded-2xl bg-white">
+          <div className="flex justify-between justify-items-center">
+            <h2 className="text-2xl font-semibold h-12 my-4">Poll History</h2>
+            <button
+              onClick={() => {
+                window.location.href = "/events/new";
+              }}
+              className=" bg-blue-400 h-12 rounded-md p-2 m-4"
+            >
+              New Events
+            </button>
+          </div>
+          <hr />
+          <div className="overflow-x-auto my-2">
+            <div className="p-4">
+              <div className="flex justify-around bg-gray-100 p-4 rounded-2xl my-8">
+                <span className="w-1/6 overflow-x-auto">Subject</span>
+                <span className="w-1/6 overflow-x-auto">Type</span>
+                <span className="w-1/6 overflow-x-auto">Duration</span>
+                <span className="w-1/6 overflow-x-auto">Created by</span>
+                <span className="w-1/6 overflow-x-auto">Date</span>
+                <span className="w-1/6 overflow-x-auto">Status</span>
+              </div>
+              {events.map((event: any, index: any) => {
+                return (
+                  <div className="my-4" key={index}>
+                    <div className="flex justify-around p-4 my-2">
+                      <Link
+                        to={`/events/${event.id}`}
+                        className="w-1/6 text-blue-400 overflow-x-auto"
+                      >
+                        {event.data().name}
+                      </Link>
+                      <span className="w-1/6 overflow-x-auto">
+                        {event.data().type}
+                      </span>
+                      <span className="w-1/6 overflow-x-auto">
+                        {event.data().endDate}
+                      </span>
+                      <span className="w-1/6 overflow-x-auto">
+                        {event.data().startDate}
+                      </span>
+                      <span className="w-1/6 overflow-x-auto">
+                        {event.data().endDate}
+                      </span>
+                      <span className="w-1/6 overflow-x-auto">
+                        {event.data().startDate}
+                      </span>
+                    </div>
+                    <hr />
+                  </div>
+                );
+              })}
+            </div>
+          </div>
+        </div>
+      </div>
     </>
   );
 };

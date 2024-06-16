@@ -15,6 +15,8 @@ export const NewEventButton = ({ account }: NewEventButtonProps) => {
     const result = await NewEvent(account);
 
     if (result.success) {
+      console.log(result.event_id);
+
       setModalContent("🎉 Event created successfully!");
     } else {
       setModalContent("❌ Event creation failed!");

@@ -1,14 +1,18 @@
 import { Outlet } from "react-router-dom";
-import AppNavigation from "../components/AppNavigation";
-
+// import AppNavigation from "../components/AppNavigation";
+import Topbar from "../components/Navigation/TopBar";
+import Sidebar from "./../components/Navigation/Sidebar";
 const DefaultLayout = () => {
   return (
-    <>
-      <AppNavigation />
-      <main className="max-w-screen-2xl mx-auto py-10">
-        <Outlet />
-      </main>
-    </>
+    <div className="flex h-screen bg-gray-100">
+      <Sidebar />
+      <div className="flex-1 flex flex-col overflow-hidden">
+        <Topbar />
+        <main className="flex-1 overflow-y-auto">
+          <Outlet />
+        </main>
+      </div>
+    </div>
   );
 };
 

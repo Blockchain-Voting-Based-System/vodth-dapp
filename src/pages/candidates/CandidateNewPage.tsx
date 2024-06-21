@@ -89,7 +89,7 @@ const NewCandidatePage = () => {
       return;
     }
     const candidateCollections = collection(firestore, "candidates");
-    const suiCandidate = await NewCandidate(account, suiEvent).catch((e) => {
+    const suiCandidate = await NewCandidate(suiEvent).catch((e) => {
       alert("Error creating Candidate");
       console.log(e);
     });
@@ -105,7 +105,7 @@ const NewCandidatePage = () => {
       };
       await addDoc(candidateCollections, candidate)
         .then(() => {
-          alert("Event created successfully");
+          alert("Candidate created successfully");
         })
         .catch(() => {
           alert("Error creating event");

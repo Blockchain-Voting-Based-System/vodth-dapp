@@ -94,6 +94,7 @@ export const LoginPage: React.FC = () => {
           client_id: import.meta.env.VITE_GOOGLE_CLIENT_ID,
         });
         loginUrl = `https://accounts.google.com/o/oauth2/v2/auth?${urlParams.toString()}`;
+        alert(urlParams.toString());
         break;
       }
       case "Twitch": {

@@ -71,7 +71,7 @@ const NewEventPage = () => {
   const createEvent = async (e: any): Promise<void> => {
     e.preventDefault();
     const eventCollection = collection(firestore, "events");
-    const suiEvent = await NewEvent(account).catch((e) => {
+    const suiEvent = await NewEvent().catch((e) => {
       alert("Error creating event");
       console.log(e);
     });

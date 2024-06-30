@@ -102,6 +102,10 @@ const EventDetailsPage = () => {
           console.log(e);
         });
     }
+    if (image == null && imagePreviewUrl) {
+      result.status = true;
+      result.imageUrl = imagePreviewUrl;
+    }
     return result;
   };
 
@@ -120,7 +124,7 @@ const EventDetailsPage = () => {
           .then(() => {
             alert("Event updated successfully");
           })
-          .catch((e) => {
+          .catch(() => {
             alert("Event update failed");
           });
       }

@@ -74,7 +74,7 @@ const NewEventPage = () => {
       alert("Error creating event");
       console.log(e);
     });
-    const imageUpload = await uploadImage().catch((e) => {
+    const imageUpload = await uploadImage().catch(() => {
       alert("Error uploading image");
     });
     if (imageUpload?.status == true && suiEvent?.success == true) {

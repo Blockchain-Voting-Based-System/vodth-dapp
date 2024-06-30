@@ -91,7 +91,7 @@ const NewCandidatePage = () => {
       return;
     }
     const candidateCollections = collection(firestore, "candidates");
-    const imageUpload = await uploadImage().catch((e) => {
+    const imageUpload = await uploadImage().catch(() => {
       alert("Error uploading image");
     });
     if (imageUpload?.status == true) {

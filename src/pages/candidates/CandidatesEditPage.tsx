@@ -1,11 +1,10 @@
 // import CsvUploader from "../../components/csv/CsvUploader";
 import { useState, useEffect } from "react";
-import { collection, addDoc, getDoc, doc } from "firebase/firestore";
+import { getDoc, doc, updateDoc } from "firebase/firestore";
 import { eventStorage, firestore } from "../../firebase";
 import { getDownloadURL } from "firebase/storage";
 import { ref, uploadBytes } from "firebase/storage";
 import { useParams } from "react-router-dom";
-import { NewCandidate } from "../../utils/newCandidate";
 import { useRef } from "react";
 
 const EditCandidatePage = () => {
@@ -16,7 +15,7 @@ const EditCandidatePage = () => {
   }, []);
   const fileInputRef = useRef<HTMLInputElement>(null);
 
-  const [suiEvent, setSuiEvent] = useState();
+  // const [suiEvent, setSuiEvent] = useState();
   const [formState, setFormState] = useState({
     name: "",
     birthday: new Date(),
@@ -97,33 +96,29 @@ const EditCandidatePage = () => {
     return result;
   };
 
-  const createCandidate = async (e: any) => {
+  const updateCandidate = async (e: any) => {
     setDisabled(true);
     e.preventDefault();
-    if (suiEvent == null) {
-      alert("Please select an event");
-      return;
-    }
-    const candidateCollections = collection(firestore, "candidates");
-    const suiCandidate = await NewCandidate(suiEvent).catch((e) => {
-      alert("Error creating Candidate");
-      console.log(e);
-    });
-    const imageUpload = await uploadImage().catch((e) => {
+    const imageUpload = await uploadImage().catch(() => {
       alert("Error uploading image");
     });
-    if (imageUpload?.status == true && suiCandidate?.success == true) {
+
+    if (imageUpload?.status == true) {
       const candidate = {
         ...formState,
         imageUrl: imageUpload.imageUrl,
       };
-      await addDoc(candidateCollections, candidate)
-        .then(() => {
-          alert("Candidate created successfully");
-        })
-        .catch(() => {
-          alert("Error creating event");
-        });
+
+      if (params.candidateId) {
+        const docRef = doc(firestore, "candidates", params.candidateId);
+        await updateDoc(docRef, candidate)
+          .then(() => {
+            alert("Candidate updated successfully");
+          })
+          .catch(() => {
+            alert("Candidate update failed");
+          });
+      }
     }
     setDisabled(false);
   };
@@ -226,43 +221,58 @@ const EditCandidatePage = () => {
               </div>
               <div className="col-span-2 grid grid-cols-5 space-x-4">
                 <div className="col-span-3">
-                  <div className="my-2 p-2">Candidate Picture</div>
+                  <div className=" flex my-2 p-2 space-x-4">
+                    <p>Candidate Picture</p>
+                    {imagePreviewUrl && (
+                      <button
+                        type="button"
+                        onClick={() => {
+                          fileInputRef.current?.click();
+                        }}
+                        className="text-blue-500"
+                      >
+                        Change
+                      </button>
+                    )}
+                  </div>
                   <div>
                     <div className="flex items-center justify-center">
                       <div
                         className={`border-2 border-dashed border-gray-40 text-center bg-white rounded-lg cursor-pointer ${!imagePreviewUrl && "p-2"}`}
-                        onClick={() => {
-                          fileInputRef.current?.click();
-                        }}
                       >
                         {imagePreviewUrl ? (
                           <img
                             className="w-full rounded-lg"
                             src={imagePreviewUrl}
                             alt=""
-                            onClick={() => {
-                              fileInputRef.current?.click();
-                            }}
                           />
                         ) : (
                           <div>
                             <p className="text-lg mb-2">
                               <strong>Add & Drop</strong> or{" "}
-                              <span className="text-blue-500">Browse</span>
+                              <button
+                                type="button"
+                                onClick={() => {
+                                  fileInputRef.current?.click();
+                                }}
+                                className="text-blue-500"
+                              >
+                                Browse
+                              </button>
                             </p>
                             <p className="text-sm text-gray-600 p-3">
                               We currently support JPG, JPEG, PNG and make sure
                               your file size is not more than 500kb
                             </p>
-                            <input
-                              type="file"
-                              ref={fileInputRef}
-                              className="hidden"
-                              onChange={handleImageChange}
-                              accept=".jpg, .jpeg, .png"
-                            />
                           </div>
                         )}
+                        <input
+                          type="file"
+                          ref={fileInputRef}
+                          className="hidden"
+                          onChange={handleImageChange}
+                          accept=".jpg, .jpeg, .png"
+                        />
                       </div>
                     </div>
                   </div>
@@ -350,7 +360,7 @@ const EditCandidatePage = () => {
               <div className="mt-4 flex justify-end col-span-5 space-x-4">
                 <button
                   onClick={() => {
-                    // window.location.href = `/events/${eventId}`;
+                    window.location.href = `/events/${params.eventId}`;
                   }}
                   type="button"
                   className="inline-block w-full rounded-lg bg-red-500 px-5 py-3 font-medium text-white sm:w-auto"
@@ -359,11 +369,11 @@ const EditCandidatePage = () => {
                 </button>
                 <button
                   disabled={disabled}
-                  onClick={createCandidate}
+                  onClick={updateCandidate}
                   type="submit"
                   className="inline-block w-full rounded-lg bg-black px-5 py-3 font-medium text-white sm:w-auto disabled:opacity-50 disabled:cursor-not-allowed"
                 >
-                  Create Candidate
+                  Updat Candidate
                 </button>
               </div>
             </form>

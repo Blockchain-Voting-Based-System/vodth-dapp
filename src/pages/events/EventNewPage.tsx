@@ -165,14 +165,24 @@ const NewEventPage = () => {
                 </div>
               </div>
               <div className="col-span-3">
-                <div className="my-2 p-2">Event Image</div>
+                <div className="my-2 p-2 flex space-x-4">
+                  <p>Event Image</p>
+                  {imagePreviewUrl && (
+                    <button
+                      type="button"
+                      onClick={() => {
+                        fileInputRef.current?.click();
+                      }}
+                      className="text-blue-500"
+                    >
+                      Change
+                    </button>
+                  )}
+                </div>
                 <div>
                   <div className="flex items-center justify-center">
                     <div
                       className={`border-2 border-dashed border-gray-40 text-center bg-white rounded-lg max-w-md w-full cursor-pointer ${!imagePreviewUrl && "p-24"}`}
-                      onClick={() => {
-                        fileInputRef.current?.click();
-                      }}
                       style={{ height: "292px" }}
                     >
                       {imagePreviewUrl ? (
@@ -181,15 +191,20 @@ const NewEventPage = () => {
                           style={{ maxHeight: "400px", height: "100%" }}
                           src={imagePreviewUrl}
                           alt=""
-                          onClick={() => {
-                            fileInputRef.current?.click();
-                          }}
                         />
                       ) : (
                         <div>
                           <p className="text-lg mb-2">
                             <strong>Add & Drop</strong> or{" "}
-                            <span className="text-blue-500">Browse</span>
+                            <button
+                              type="button"
+                              onClick={() => {
+                                fileInputRef.current?.click();
+                              }}
+                              className="text-blue-500"
+                            >
+                              Browse
+                            </button>
                           </p>
                           <p className="text-sm text-gray-600">
                             We currently support JPG, JPEG, PNG and make sure

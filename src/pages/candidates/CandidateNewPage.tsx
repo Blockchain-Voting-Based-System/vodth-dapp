@@ -7,7 +7,6 @@ import { ref, uploadBytes } from "firebase/storage";
 import { useParams } from "react-router-dom";
 import { NewCandidate } from "../../utils/newCandidate";
 import { useRef } from "react";
-import { log } from "@polymedia/suits";
 
 const NewCandidatePage = () => {
   const [disabled, setDisabled] = useState(false);
@@ -101,8 +100,6 @@ const NewCandidatePage = () => {
         console.log(e);
       });
       if (suiCandidate?.success == true) {
-        console.log(JSON.stringify(suiCandidate.suiCandidateId));
-
         const candidate = {
           ...formState,
           imageUrl: imageUpload.imageUrl,
@@ -113,7 +110,7 @@ const NewCandidatePage = () => {
         await addDoc(candidateCollections, candidate)
           .then((candidate) => {
             alert("Candidate created successfully");
-            // window.location.href = `/events/${eventId}/candidates/${candidate.id}/edit`;
+            window.location.href = `/events/${eventId}/candidates/${candidate.id}/edit`;
           })
           .catch(() => {
             alert("Error creating event");
@@ -228,43 +225,58 @@ const NewCandidatePage = () => {
               </div>
               <div className="col-span-2 grid grid-cols-5 space-x-4">
                 <div className="col-span-3">
-                  <div className="my-2 p-2">Candidate Picture</div>
+                  <div className=" flex my-2 p-2 space-x-4">
+                    <p>Candidate Picture</p>
+                    {imagePreviewUrl && (
+                      <button
+                        type="button"
+                        onClick={() => {
+                          fileInputRef.current?.click();
+                        }}
+                        className="text-blue-500"
+                      >
+                        Change
+                      </button>
+                    )}
+                  </div>
                   <div>
                     <div className="flex items-center justify-center">
                       <div
                         className={`border-2 border-dashed border-gray-40 text-center bg-white rounded-lg cursor-pointer ${!imagePreviewUrl && "p-2"}`}
-                        onClick={() => {
-                          fileInputRef.current?.click();
-                        }}
                       >
                         {imagePreviewUrl ? (
                           <img
                             className="w-full rounded-lg"
                             src={imagePreviewUrl}
-                            alt=""
-                            onClick={() => {
-                              fileInputRef.current?.click();
-                            }}
+                            alt="candidate profile picture"
                           />
                         ) : (
                           <div>
                             <p className="text-lg mb-2">
                               <strong>Add & Drop</strong> or{" "}
-                              <span className="text-blue-500">Browse</span>
+                              <button
+                                type="button"
+                                onClick={() => {
+                                  fileInputRef.current?.click();
+                                }}
+                                className="text-blue-500"
+                              >
+                                Browse
+                              </button>
                             </p>
                             <p className="text-sm text-gray-600 p-3">
                               We currently support JPG, JPEG, PNG and make sure
                               your file size is not more than 500kb
                             </p>
-                            <input
-                              type="file"
-                              ref={fileInputRef}
-                              className="hidden"
-                              onChange={handleImageChange}
-                              accept=".jpg, .jpeg, .png"
-                            />
                           </div>
                         )}
+                        <input
+                          type="file"
+                          ref={fileInputRef}
+                          className="hidden"
+                          onChange={handleImageChange}
+                          accept=".jpg, .jpeg, .png"
+                        />
                       </div>
                     </div>
                   </div>

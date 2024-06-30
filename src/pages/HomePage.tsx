@@ -3,6 +3,7 @@ import { WalletStatus } from "../components/wallet/WalletStatus";
 import { ConnectButton } from "@mysten/dapp-kit";
 import { Ed25519Keypair } from "@mysten/sui.js/keypairs/ed25519";
 import { keypairFromSecretKey } from "../utils/sui";
+import RequestFaucetButton from "../components/events/RequestFaucetButton";
 const HomePage = () => {
   function testMnenic() {
     const words =
@@ -22,6 +23,7 @@ const HomePage = () => {
         <ConnectButton></ConnectButton>
         <WalletStatus />
         <SuiAccount />
+        <RequestFaucetButton></RequestFaucetButton>
         <button
           onClick={(e) => {
             e.preventDefault();

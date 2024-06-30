@@ -2,7 +2,7 @@ import { useParams } from "react-router-dom";
 import { useState, useEffect, useRef } from "react";
 import { EventFormType } from "../../utils/formType";
 import { eventStorage, firestore } from "../../firebase";
-import { ref, uploadBytes, getDownloadURL } from "firebase/storage";
+import { ref, uploadBytes } from "firebase/storage";
 import {
   getDoc,
   doc,
@@ -16,7 +16,7 @@ import {
 import CandidatesList from "../../components/candidatesList/CandidateList";
 const EventDetailsPage = () => {
   const fileInputRef = useRef<HTMLInputElement>(null);
-  const { event_id } = useParams();
+  const { eventId } = useParams();
   const [image, setImage] = useState<File>();
   const [imageName, setImageName] = useState("");
   const [imagePreviewUrl, setImagePreviewUrl] = useState("");
@@ -40,36 +40,26 @@ const EventDetailsPage = () => {
         startDate: event.data().startDate,
         endDate: event.data().endDate,
       };
-      const imageRef = ref(eventStorage, `events/${event.data().image_name}`);
-      await getDownloadURL(imageRef).then((r) => {
-        setImagePreviewUrl(r);
-      });
+      setImagePreviewUrl(event.data().imageUrl);
       setFormState(eventForm);
-      setImageName(event.data().image_name);
+      setImageName(event.data().imageUrl);
     }
-  }
-
-  async function getCandidatesImages(image_name: any) {
-    const imageRef = ref(eventStorage, `candidates/${image_name}`);
-    const url = await getDownloadURL(imageRef);
-    return url;
   }
 
   async function getCandidates(eventId: any) {
     const candidates: any = [];
     const candidatesCollection = collection(firestore, "candidates");
-    const q = query(candidatesCollection, where("event_id", "==", eventId));
+    const q = query(candidatesCollection, where("eventId", "==", eventId));
     const querySnapshot = await getDocs(q);
     querySnapshot.docs.map(async (doc) => {
-      const imageUrl = await getCandidatesImages(doc.data().image_name);
-      candidates.push({ ...doc.data(), imageUrl });
+      candidates.push({ id: doc.id, ...doc.data() });
     });
     setCandidates(candidates);
   }
 
   useEffect(() => {
-    getEvent(event_id);
-    getCandidates(event_id);
+    getEvent(eventId);
+    getCandidates(eventId);
   }, []);
 
   const handleInputChange = (event: any) => {
@@ -97,7 +87,7 @@ const EventDetailsPage = () => {
   const uploadImage = async () => {
     let result = {
       status: true,
-      image_name: "",
+      imageName: "",
     };
     if (image != null) {
       const imageName = image.name;
@@ -105,7 +95,7 @@ const EventDetailsPage = () => {
       await uploadBytes(ImageRef, image)
         .then(() => {
           result.status = true;
-          result.image_name = imageName;
+          result.imageName = imageName;
         })
         .catch((e) => {
           result.status = false;
@@ -118,15 +108,15 @@ const EventDetailsPage = () => {
   const updateEvent = async (e: any) => {
     e.preventDefault();
     const imageUpload = await uploadImage();
-    if (imageUpload.status == true && imageUpload.image_name != "") {
+    if (imageUpload.status == true && imageUpload.imageName != "") {
       const event = {
         ...formState,
-        image_name: imageUpload.image_name,
+        imageName: imageUpload.imageName,
       };
       console.log(event);
 
-      if (event_id) {
-        const docRef = doc(firestore, "events", event_id);
+      if (eventId) {
+        const docRef = doc(firestore, "events", eventId);
         try {
           await updateDoc(docRef, event).then(() => {
             console.log(true);
@@ -136,18 +126,14 @@ const EventDetailsPage = () => {
         }
       }
     }
-    if (
-      imageUpload.status == true &&
-      imageUpload.image_name == "" &&
-      event_id
-    ) {
+    if (imageUpload.status == true && imageUpload.imageName == "" && eventId) {
       const event = {
         ...formState,
-        image_name: imageName,
+        imageName: imageName,
       };
       console.log(event);
 
-      const docRef = doc(firestore, "events", event_id);
+      const docRef = doc(firestore, "events", eventId);
       await updateDoc(docRef, event)
         .then(() => {
           alert("Event updated successfully");
@@ -338,7 +324,7 @@ const EventDetailsPage = () => {
           </form>
         </div>
       </div>
-      <CandidatesList eventId={event_id} candidates={candidates} />
+      <CandidatesList eventId={eventId} candidates={candidates} />
     </section>
   );
 };

@@ -93,6 +93,10 @@ const EditCandidatePage = () => {
           console.log(e);
         });
     }
+    if (image == null) {
+      result.status = true;
+      result.imageUrl = imagePreviewUrl;
+    }
     return result;
   };
 
@@ -102,7 +106,6 @@ const EditCandidatePage = () => {
     const imageUpload = await uploadImage().catch(() => {
       alert("Error uploading image");
     });
-
     if (imageUpload?.status == true) {
       const candidate = {
         ...formState,

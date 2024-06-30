@@ -9,13 +9,13 @@ const suiClient = new SuiClient({
 });
 
 type EventResult = {
-  event_id: string | undefined;
+  suiEventId: string | undefined;
   success: boolean;
 };
 
 export async function NewEvent(): Promise<EventResult> {
   let eventResult: EventResult = {
-    event_id: "",
+    suiEventId: "",
     success: false,
   };
   const MNEMONICS = import.meta.env.VITE_MNEMONICS;
@@ -36,7 +36,8 @@ export async function NewEvent(): Promise<EventResult> {
     })
     .then((result) => {
       eventResult.success = true;
-      eventResult.event_id = result.effects?.created?.[0]?.reference?.objectId;
+      eventResult.suiEventId =
+        result.effects?.created?.[0]?.reference?.objectId;
     })
     .catch((error: unknown) => {
       console.warn("[sendTransaction] executeTransactionBlock failed:", error);

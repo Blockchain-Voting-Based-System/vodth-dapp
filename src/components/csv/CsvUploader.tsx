@@ -24,11 +24,11 @@ const CsvUploader: React.FC<CsvUploaderProps> = ({eventName, eventRef}) => {
       console.log("Uploading CSV data");
       const eventDocRef = doc(firestore, "events", eventRef);
       const eventSnapshot = await getDoc(eventDocRef);
-      let voters = [];
+      let voterSecrets = [];
 
       if (eventSnapshot.exists()) {
-        // Check if the 'voters' field exists and has content
-        voters = eventSnapshot.data().voters || [];
+        // Check if the 'voterSecrets' field exists and has content
+        voterSecrets = eventSnapshot.data().voterSecrets || [];
       }
 
       for (const row of csvData) {
@@ -40,12 +40,8 @@ const CsvUploader: React.FC<CsvUploaderProps> = ({eventName, eventRef}) => {
         const secret = useGenerateSecret(row.email);
         row.secret = secret;
 
-        // Append the new voter data to the voters array
-        voters.push({
-          email: row.email,
-          secret: secret,
-          // Add any other voter details here
-        });
+        // Append the new voter data to the voterSecrets array
+        voterSecrets.push(secret);
 
         // Render the EmailTemplate component to HTML
         const emailHtml = renderToString(
@@ -68,8 +64,8 @@ const CsvUploader: React.FC<CsvUploaderProps> = ({eventName, eventRef}) => {
         await addDoc(emailCollection, emailPayload);
       }
 
-      // After the loop, update the event document with the new voters array
-      await updateDoc(eventDocRef, { voters: voters });
+      // After the loop, update the event document with the new voterSecrets array
+      await updateDoc(eventDocRef, { voterSecrets: voterSecrets });
     } catch (error) {
       console.error("Error uploading CSV data: ", error);
     }

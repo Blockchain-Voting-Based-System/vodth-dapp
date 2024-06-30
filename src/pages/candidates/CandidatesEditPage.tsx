@@ -187,6 +187,7 @@ const EditCandidatePage = () => {
                       tabIndex={0}
                     >
                       <input
+                        checked={formState.sex == "Female"}
                         required
                         className="sr-only"
                         id="Female"
@@ -207,6 +208,7 @@ const EditCandidatePage = () => {
                       tabIndex={0}
                     >
                       <input
+                        checked={formState.sex == "Other"}
                         required
                         className="sr-only"
                         id="Other"

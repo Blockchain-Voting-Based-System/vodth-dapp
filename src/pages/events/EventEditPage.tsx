@@ -1,19 +1,20 @@
-import { useParams } from "react-router-dom";
-import { useState, useEffect, useRef } from "react";
-import { EventFormType } from "../../utils/formType";
-import { eventStorage, firestore } from "../../firebase";
-import { ref, uploadBytes, getDownloadURL } from "firebase/storage";
 import {
-  getDoc,
-  doc,
-  updateDoc,
-  collection,
-  query,
-  getDocs,
-  where,
   DocumentData,
+  collection,
+  doc,
+  getDoc,
+  getDocs,
+  query,
+  updateDoc,
+  where,
 } from "firebase/firestore";
+import { getDownloadURL, ref, uploadBytes } from "firebase/storage";
+import { useEffect, useRef, useState } from "react";
+import { useParams } from "react-router-dom";
 import CandidatesList from "../../components/candidatesList/CandidateList";
+import CsvUploader from "../../components/csv/CsvUploader";
+import { eventStorage, firestore } from "../../firebase";
+import { EventFormType } from "../../utils/formType";
 const EventDetailsPage = () => {
   const fileInputRef = useRef<HTMLInputElement>(null);
   const { eventId } = useParams();
@@ -328,6 +329,7 @@ const EventDetailsPage = () => {
           </form>
         </div>
       </div>
+      <CsvUploader  eventName={formState.name} eventRef={eventId} />
       <CandidatesList eventId={eventId} candidates={candidates} />
     </section>
   );

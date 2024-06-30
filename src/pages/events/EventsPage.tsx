@@ -29,7 +29,7 @@ const EventPage = () => {
           <h2 className="text-2xl font-semibold h-12 my-4">Events List</h2>
           <button
             onClick={() => {
-              window.location.href = "/events/new";
+              window.location.href = "/event";
             }}
             className=" bg-blue-400 h-12 rounded-md p-2 m-4"
           >

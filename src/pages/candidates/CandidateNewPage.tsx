@@ -3,7 +3,7 @@ import { useState, useEffect } from "react";
 import { collection, addDoc, getDoc, doc } from "firebase/firestore";
 import { eventStorage, firestore } from "../../firebase";
 import { ref, uploadBytes } from "firebase/storage";
-import { useParams } from "react-router-dom";
+import { useNavigate, useParams } from "react-router-dom";
 import { loadAccounts } from "../../utils/sui";
 import { NewCandidate } from "../../utils/newCandidate";
 import { AccountData } from "../../utils/suiType";
@@ -13,6 +13,8 @@ const NewCandidatePage = () => {
   useEffect(() => {
     getEvent(event_id);
   }, []);
+  const navigate = useNavigate();
+  const { eventId } = useParams();
   const fileInputRef = useRef<HTMLInputElement>(null);
   const { event_id } = useParams();
   const accounts = useRef<AccountData[]>(loadAccounts());
@@ -337,9 +339,7 @@ const NewCandidatePage = () => {
               </div>
               <div className="mt-4 flex justify-end col-span-5 space-x-4">
                 <button
-                  onClick={() => {
-                    window.location.href = `/events/${event_id}`;
-                  }}
+                  onClick={() => navigate(`/events/${event_id}/candidates`)}
                   type="button"
                   className="inline-block w-full rounded-lg bg-red-500 px-5 py-3 font-medium text-white sm:w-auto"
                 >

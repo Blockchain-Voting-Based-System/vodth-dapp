@@ -1,38 +1,106 @@
-// src/components/Sidebar.tsx
-import React from "react";
+import React, { useState } from "react";
 import logo from "./../../public/logo.jpeg";
+import { AiFillDashboard } from "react-icons/ai";
+import { Tooltip } from "primereact/tooltip";
+import { MdEventAvailable } from "react-icons/md";
+import { Link } from "react-router-dom";
+import { BsFillPersonFill } from "react-icons/bs";
+import { FaHistory } from "react-icons/fa";
+
 const Sidebar: React.FC = () => {
+  const [activeItem, setActiveItem] = useState("Dashboard");
+
+  const handleItemClick = (item: string) => {
+    setActiveItem(item);
+  };
+
   return (
-    <div className="h-screen w-20 bg-white shadow-md text-center">
+    <div className="h-screen w-40 bg-white shadow-md">
       <div className="flex items-center justify-center h-16 border-b">
         <img src={logo} alt="Votechain Logo" className="h-10" />
       </div>
       <nav className="mt-10">
         <ul>
-          <li className=" p-4 text-gray-700 hover:bg-gray-200">
-            <i className="fas fa-tachometer-alt w-6 h-4"></i>
-            {/* <span className="ml-4">Dashboard</span> */}
+          <li
+            className={`p-4 flex items-center cursor-pointer ${
+              activeItem === "Dashboard"
+                ? "bg-gray-200"
+                : "text-gray-700 hover:bg-gray-200"
+            }`}
+            onClick={() => handleItemClick("Dashboard")}
+          >
+            <div id="dashboard-tooltip" className="flex items-center">
+              <AiFillDashboard />
+              <Tooltip
+                target="#dashboard-tooltip"
+                content="Dashboard"
+                position="right"
+              />
+            </div>
+            <span className="ml-2">Dashboard</span>
           </li>
-          <li className=" p-4 text-gray-700 hover:bg-gray-200">
-            <i className="fas fa-plus-square w-6 h-4"></i>
-            {/* <span className="ml-4">Create a Poll</span> */}
+          <li
+            className={`p-4 flex items-center cursor-pointer ${
+              activeItem === "Event"
+                ? "bg-gray-200"
+                : "text-gray-700 hover:bg-gray-200"
+            }`}
+            onClick={() => handleItemClick("Event")}
+          >
+            <div id="createpoll-tooltip" className="flex items-center">
+              <Link to="/events" className="flex items-center">
+                <MdEventAvailable />
+                <span className="ml-2">Event</span>
+              </Link>
+              <Tooltip
+                target="#createpoll-tooltip"
+                content="Event"
+                position="right"
+              />
+            </div>
           </li>
-          <li className=" p-4 text-gray-700 hover:bg-gray-200">
-            <i className="fas fa-pen-square w-6 h-4"></i>
-            {/* <span className="ml-4">Fill a Poll</span> */}
+          <li
+            className={`p-4 flex items-center cursor-pointer ${
+              activeItem === "Candidate"
+                ? "bg-gray-200"
+                : "text-gray-700 hover:bg-gray-200"
+            }`}
+            onClick={() => handleItemClick("Candidate")}
+          >
+            <div id="candidate-tooltip" className="flex items-center">
+              <Link to="" className="flex items-center">
+                <BsFillPersonFill />
+                <span className="ml-2">Candidate</span>
+              </Link>
+              <Tooltip
+                target="#candidate-tooltip"
+                content="Candidate"
+                position="right"
+              />
+            </div>
           </li>
-          <li className="p-4 text-white bg-black rounded-lg">
-            <i className="fas fa-history w-6 h-4"></i>
-            {/* <span className="ml-4">Poll History</span> */}
-          </li>
-          <li className=" p-4 text-gray-700 hover:bg-gray-200">
-            <i className="fas fa-cog w-6 h-4"></i>
-            {/* <span className="ml-4">Settings</span> */}
+          <li
+            className={`p-4 flex items-center cursor-pointer ${
+              activeItem === "History"
+                ? "bg-gray-200"
+                : "text-gray-700 hover:bg-gray-200"
+            }`}
+            onClick={() => handleItemClick("History")}
+          >
+            <div id="history-tooltip" className="flex items-center">
+              <FaHistory />
+              <Tooltip
+                target="#history-tooltip"
+                content="History"
+                position="right"
+              />
+              <span className="ml-2">History</span>
+            </div>
           </li>
         </ul>
       </nav>
       <div className="absolute bottom-0 w-full">
-        <div className="flex items-center px-4 py-2 text-red-600 hover:bg-red-100">
+        <div className="flex items-center px-4 py-2 text-red-600 hover:bg-red-100 cursor-pointer">
           <i className="fas fa-sign-out-alt w-6 h-4"></i>
           {/* <span className="ml-4">Log out</span> */}
         </div>
